@@ -18,3 +18,6 @@
 ## 操作日志
 
 ### 2022.09.07
+- `src/router/routes/index.ts`只留下home路由
+- 删除`views/foo`
+- 删除`components`下文件

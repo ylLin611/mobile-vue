@@ -21,3 +21,4 @@
 - `src/router/routes/index.ts`只留下home路由
 - 删除`views/foo`
 - 删除`components`下文件
+- `npm i amfe-flexible postcss-pxtorem`做移动端适配

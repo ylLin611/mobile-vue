@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" :src="logo" />
+    <div class="test"></div>
   </div>
 </template>
 
@@ -20,5 +21,10 @@ import logo from '@img/logo.png'
   color: @color-black;
   padding: (@margin * 3) 0;
   margin: 0 auto;
+}
+.test {
+  height: 375px;
+  width: 375px;
+  background-color: red;
 }
 </style>

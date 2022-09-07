@@ -81,25 +81,6 @@ export default defineConfig({
 
   css: {
     /**
-     * 包括 vw / rem 单位转换等
-     * @see https://cn.vitejs.dev/config/#css-postcss
-     */
-    // postcss: {
-    //   plugins: [
-    //     // 使用 postcss-px2rem
-    //     // px2rem({
-    //     //   remUnit: 75,
-    //     // }),
-
-    //     // 使用 postcss-px-to-viewport
-    //     // px2vw({
-    //     //   viewportWidth: 375,
-    //     //   minPixelValue: 1,
-    //     // }),
-    //   ],
-    // },
-
-    /**
      * 预处理器选项可以在这里配置
      * @see https://cn.vitejs.dev/config/#css-preprocessoroptions
      */

@@ -5,6 +5,7 @@ import router from '@/router'
 
 // 全局样式
 import '@less/global.less'
+import 'amfe-flexible'
 
 createApp(App)
   .use(createPinia()) // 启用 Pinia

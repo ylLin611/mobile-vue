@@ -22,3 +22,6 @@
 - 删除`views/foo`
 - 删除`components`下文件
 - `npm i amfe-flexible postcss-pxtorem`做移动端适配
+- 去掉`eslint.js`中的`prettier/prettier`,prettierrc中添加校验规则
+- 添加axios，封装axios
+

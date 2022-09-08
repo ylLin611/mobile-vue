@@ -26,22 +26,22 @@ class FRequest {
 
     // 全部拦截
     this.instance.interceptors.request.use(
-      config => {
+      (config) => {
         if (this.showLoading) {
           // 加载动画
           this.loading = ''
         }
         return config
       },
-      error => {
+      (error) => {
         return Promise.reject(error)
       }
     )
     this.instance.interceptors.response.use(
-      res => {
+      (res) => {
         // 结束加载
         this.loading = ''
-        const code = res.data && res.data.code || 200
+        const code = (res.data && res.data.code) || 200
         let msg = ''
         if (code < 200 || code >= 300) {
           // 处理报错信息
@@ -50,7 +50,7 @@ class FRequest {
           return res.data
         }
       },
-      err => {
+      (err) => {
         // 结束加载
         this.loading = ''
         err.data = {}
@@ -78,7 +78,8 @@ class FRequest {
           }
           this.showLoading = DEFAULT_LOADING
           resolve(res)
-        }).catch(err => {
+        })
+        .catch((err) => {
           this.showLoading = DEFAULT_LOADING
           reject(err)
           return err

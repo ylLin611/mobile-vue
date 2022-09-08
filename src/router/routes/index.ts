@@ -13,9 +13,9 @@ const routes: RouteRecordRaw[] = [
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ '@views/home.vue'),
     meta: {
-      title: 'Home',
-    },
-  },
+      title: 'Home'
+    }
+  }
 ]
 
 export default routes

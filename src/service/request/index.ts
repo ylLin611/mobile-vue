@@ -1,20 +1,26 @@
-import axios, { type AxiosInstance } from 'axios'
-import { RequestConfig, RequestInterceptor } from './type'
+import axios from 'axios'
+import type { AxiosInstance } from 'axios'
+import type { configType, interceptorsType } from './type'
+import { useCommonStore } from '@/stores/common'
+import { Toast } from 'vant'
 
-const DEFAULT_LOADING = true
+const store = useCommonStore()
+class FiveReauest {
+  private instance: AxiosInstance
+  private interceptors?: interceptorsType
+  private showLoading?: boolean
+  private DEFAULT_LOADING = true
 
-class FRequest {
-  instance: AxiosInstance
-  interceptors?: RequestInterceptor
-  showLoading: boolean
-  loading?: any
-
-  constructor(config: RequestConfig) {
+  constructor(config: configType) {
+    // 创建 axios 实例
     this.instance = axios.create(config)
-    this.showLoading = config.showLoading ?? DEFAULT_LOADING
+
+    // 保存基本信息
+    this.DEFAULT_LOADING = this.showLoading =
+      config.showLoading ?? this.DEFAULT_LOADING
     this.interceptors = config.interceptors
 
-    // 如果new FRequest有拦截器，添加到axios拦截器上
+    // 设置请求实例的拦截器
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptor,
       this.interceptors?.requestInterceptorCatch
@@ -24,83 +30,75 @@ class FRequest {
       this.interceptors?.responseInterceptorCatch
     )
 
-    // 全部拦截
+    // 配置所有实例的 request 拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        if (this.showLoading) {
-          // 加载动画
-          this.loading = ''
-        }
+        // 加载弹框
+        store.updateLoading(true)
         return config
       },
-      (error) => {
-        return Promise.reject(error)
+      (err) => {
+        return err
       }
     )
+    // 配置所有实例的 response 拦截器
     this.instance.interceptors.response.use(
       (res) => {
-        // 结束加载
-        this.loading = ''
-        const code = (res.data && res.data.code) || 200
-        let msg = ''
-        if (code < 200 || code >= 300) {
-          // 处理报错信息
-          msg = getErrorMsg(code)
-        } else {
-          return res.data
-        }
+        store.updateLoading(false)
+        return res
       },
       (err) => {
-        // 结束加载
-        this.loading = ''
-        err.data = {}
-        err.data.msg = `请求异常！`
-        return Promise.resolve(err)
+        store.updateLoading(false)
+        throw err
       }
     )
   }
-
-  request<T = any>(config: RequestConfig): Promise<T> {
+  // 发送请求，并且配置单独请求的拦截器
+  request<T = any>(config: configType): Promise<T> {
     return new Promise((resolve, reject) => {
-      // 请求可传参数
-      // 单个请求拦截
+      // request 拦截器
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
-      if (config.showLoading === false) {
+
+      if (config.showLoading !== undefined) {
         this.showLoading = config.showLoading
       }
+
       this.instance
-        .request<any, T>(config)
-        .then((res: any) => {
+        .request(config)
+        .then((res) => {
+          // response 拦截器
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
           }
-          this.showLoading = DEFAULT_LOADING
-          resolve(res)
+          this.showLoading = this.DEFAULT_LOADING
+          if (res.data.code == '200') {
+            Toast('成功')
+          } else {
+            // 返回结果
+            resolve(res.data.payload)
+          }
         })
         .catch((err) => {
-          this.showLoading = DEFAULT_LOADING
+          this.showLoading = this.DEFAULT_LOADING
           reject(err)
+          console.log(`【请求失败】${err}`)
           return err
         })
     })
   }
-
-  get(config: RequestConfig) {
-    return this.request({ ...config, method: 'GET' })
+  get<T = any>(config: configType): Promise<T> {
+    return this.request<T>({ ...config, method: 'GET' })
   }
-  post(config: RequestConfig) {
-    return this.request({ ...config, method: 'POST' })
+  post<T = any>(config: configType): Promise<T> {
+    return this.request<T>({ ...config, method: 'POST' })
   }
-  delete(config: RequestConfig) {
-    return this.request({ ...config, method: 'DELETE' })
+  delete<T = any>(config: configType): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELETE' })
   }
-  patch(config: RequestConfig) {
-    return this.request({ ...config, method: 'PATCH' })
+  patch<T = any>(config: configType): Promise<T> {
+    return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
-const getErrorMsg = (code: number) => {
-  return '错误'
-}
-export default FRequest
+export default FiveReauest

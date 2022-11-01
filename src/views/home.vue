@@ -1,15 +1,21 @@
 <template>
   <div class="home">
-    <div class="test"></div>
+    <div class="test">
+      <van-button type="primary" @click="btnClick">主要按钮</van-button>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useCommonStore } from '@/stores/common'
 
-<style lang="less" scoped>
-.test {
-  height: 375px;
-  width: 375px;
-  background-color: red;
+const store = useCommonStore()
+const btnClick = () => {
+  store.updateLoading(true)
+  setTimeout(() => {
+    store.updateLoading(false)
+  }, 3000)
 }
-</style>
+</script>
+
+<style lang="less" scoped></style>

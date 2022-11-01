@@ -25,3 +25,8 @@
 - 去掉`eslint.js`中的`prettier/prettier`,prettierrc中添加校验规则
 - 添加axios，封装axios
 
+### 2022.11.1
+- 添加vant
+- axios添加请求拦截
+- 添加全局loading
+

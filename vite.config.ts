@@ -4,6 +4,8 @@ import vue from '@vitejs/plugin-vue'
 import components from 'unplugin-vue-components/vite'
 import banner from 'vite-plugin-banner'
 import pkg from './package.json'
+import { VantResolver } from 'unplugin-vue-components/resolvers'
+
 const resolve = (dir: string): string => path.resolve(__dirname, dir)
 
 // https://vitejs.dev/config/
@@ -13,13 +15,8 @@ export default defineConfig({
    * @see https://cn.vitejs.dev/config/#base
    */
   base: '/',
-
-  /**
-   * 本地开发服务，也可以配置接口代理
-   * @see https://cn.vitejs.dev/config/#server-proxy
-   */
   server: {
-    port: 3000,
+    port: 3000
     // proxy: {
     //   '/devapi': {
     //     target: 'http://192.168.10.198',
@@ -75,8 +72,8 @@ export default defineConfig({
       '~@less': resolve('src/assets/less'),
       '~@libs': resolve('src/libs'),
       '~@cp': resolve('src/components'),
-      '~@views': resolve('src/views'),
-    },
+      '~@views': resolve('src/views')
+    }
   },
 
   css: {
@@ -89,10 +86,10 @@ export default defineConfig({
         javascriptEnabled: true,
         modifyVars: {
           'primary-color': '#1890ff',
-          hack: `true; @import '@less/config.less'`,
-        },
-      },
-    },
+          hack: `true; @import '@less/config.less'`
+        }
+      }
+    }
   },
 
   plugins: [
@@ -107,6 +104,7 @@ export default defineConfig({
       extensions: ['vue', 'ts'],
       deep: true,
       dts: false,
+      resolvers: [VantResolver()]
     }),
 
     /**
@@ -115,6 +113,6 @@ export default defineConfig({
      */
     banner(
       `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: v${pkg.description}\n * author: ${pkg.author}\n */`
-    ),
-  ],
+    )
+  ]
 })

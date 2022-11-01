@@ -4,6 +4,7 @@
     "mobje",
     "pinia",
     "pxtorem",
-    "unplugin"
+    "unplugin",
+    "vant"
   ]
 }

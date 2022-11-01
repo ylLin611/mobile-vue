@@ -1,27 +1,12 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" :src="logo" />
     <div class="test"></div>
   </div>
 </template>
 
-<script setup lang="ts">
-import logo from '@img/logo.png'
-</script>
+<script setup lang="ts"></script>
 
 <style lang="less" scoped>
-.home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: @color-black;
-  padding: (@margin * 3) 0;
-  margin: 0 auto;
-}
 .test {
   height: 375px;
   width: 375px;
